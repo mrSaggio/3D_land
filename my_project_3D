@@ -1,0 +1,99 @@
+unit GenLand;
+
+interface
+
+type
+TMasLand=array of array of real;
+
+var
+masLand:TMasLand;
+
+Procedure Gen;
+
+
+
+
+
+
+implementation
+
+
+
+Function Rand():real;
+var
+a:byte;
+begin
+
+  Randomize;
+  result:=(random(100))/100;
+  a:=random(20);
+  if (a mod 2)<>0 then
+  Result:=Result*(-1);
+
+end;
+
+Procedure Gen;
+var
+
+i,j,x,y:integer;
+t:integer;
+Sr,e,h:real;
+  L: Integer;
+SmX,SmY:byte;
+masLand2:TMasLand;
+
+begin
+x:=2;y:=2;
+h:=1;
+e:=1;
+t:=1;
+SetLength(masLand,x,y);  
+
+masLand[0,0]:=Rand;
+masLand[x-1,0]:=Rand;
+masLand[0,y-1]:=Rand;
+masLand[x-1,y-1]:=Rand;
+
+for I := 0 to 7 do
+  begin
+    SetLength(masLand2,x+t,y+t);
+    SmX:=0;
+    for J := 0 to x - 2 do
+      begin
+        SmY:=0;
+        for L := 0 to y - 2 do
+          begin
+          sr:=masLand[j,l]+masLand[j+1,l+1]+masLand[j,l+1]+masLand[j+1,l];
+          masLand2[j+1+SmX,l+1+SmY]:=sr/4+(Rand/e);
+
+          sr:=masLand[j,l]+masLand[j+1,l];
+          masLand2[j+1+SmX,l+SmY]:=sr/2+(Rand/e);
+
+          sr:=masLand[j,l+1]+masLand[j+1,l+1];
+          masLand2[j+1+SmX,l+2+SmY]:=sr/2+(Rand/e);
+
+          sr:=masLand[j,l]+masLand[j,l+1];
+          masLand2[j+SmX,l+1+SmY]:=sr/2+(Rand/e);
+
+          sr:=masLand[j+1,l]+masLand[j+1,l+1];
+          masLand2[j+2+SmX,l+1+SmY]:=sr/2+(Rand/e);
+
+          masLand2[j+SmX,l+SmY]:=masLand[j,l];
+          masLand2[j+2+SmX,l+2+SmY]:=masLand[j+1,l+1];
+          masLand2[j+2+SmX,l+SmY]:=masLand[j+1,l];
+          masLand2[j+SmX,l+2+SmY]:=masLand[j,l+1];
+          inc(SmY);
+          end;
+          inc(SmX);
+      end;
+      x:=x+t;y:=y+t;
+      SetLength(masLand,x,y);
+      masLand:=masLand2;
+      e:=e*2*h;
+      t:=t*2;
+
+  end;
+
+end;
+
+end.
